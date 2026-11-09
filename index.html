@@ -24,7 +24,7 @@ footer{color:var(--sub);font-size:12px;text-align:center;padding:10px 16px 30px}
 </main>
 <footer>動画はこのページから見てください。URLやページを他の人に送らないでください。</footer>
 <script>
-const DATA={"salt": "jGcXjsdQjZw+69LLRBJxww==", "iv": "Yu3oDba7p5bosU27", "ct": "upWVtg1ofQFTh67hQ9MzCYIzMj562VBl+h+/C2TyHlSJQZvvOJdfRF2rZyj27s8u1PLk5VmQg89egx19KtiI61Fu9uObJPLNLrGUaQRD3bZCkQark9NsDrtpng0OujJLcQYHrONy0H4pgStBGUu/p1ulOGuVLbIWMQmAr7Tc1eYYkF+inpqeoaYI5yxH6BMxNx6zbRe/btsfv1zhqAxnYMVMunusCt1gjCht5sFGmQhvjurJjg865KqCqCsZ78dTdr3y2nBbwbpaCfsGw6IgHtaVN3Og+ZOiaEdqvTqkct4fhtdu5QgoWIS7QafzbwBXR5+arajocyA+wi232xs1OacRkA==", "iter": 150000};
+const DATA={"salt": "x4Iwsy23b3f4t71+da8PQw==", "iv": "xnbFwlpEETygFuYc", "ct": "wWLeTA1NsM/h4HqpK+U5lX+n0OCLlu2bNvatxTiVNptPkDDeJn5UAbNFUBUhDt94ppQ9AFhb17JS87NsGoowRVVcoBc4Iby/ESjvrMXCPdFjAhcJ2JKYqXfHHgc2ZSkb1vjmiY6pZhIwKMmOSPZzDZjcVOzdV1QiV5aCOALczoifAdaOrdgsde+nU9VXQZa1r/Un6jEVZBMUXsQ9ipviZi6biWBrtbeUCRKuBQjmq/yc5v8jbcv2PAttigJaCYsP1iShM1M8TrszpTNtF7u8UIYQrWwEO8EgitOALYibWnDuxbdikb4kuZO85eLMVRcRlifZb5zxZD84CQ0qBRwxWuwOog==", "iter": 150000};
 const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function open_(pw){
   const k0=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw.replace(/[^0-9A-Za-z]/g,'').toUpperCase()),'PBKDF2',false,['deriveKey']);
