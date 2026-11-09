@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>高校生物 イメージ動画</title>
+<style>
+:root{--bg:#0b1226;--card:#141d38;--tx:#eef3ff;--sub:#a9b6d6;--ac:#7fd3ff;--btn:#2f7cf6}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:"Hiragino Sans","Yu Gothic UI","Meiryo",sans-serif;line-height:1.6}
+header{padding:22px 16px 6px;text-align:center}h1{font-size:22px;margin:0}header p{margin:6px 0 0;color:var(--sub);font-size:14px}
+main{max-width:760px;margin:0 auto;padding:12px 16px 40px}
+.gate{background:var(--card);border-radius:14px;padding:22px 18px;text-align:center;margin-top:18px}
+.gate input{font-size:22px;letter-spacing:.12em;text-align:center;width:100%;max-width:260px;padding:10px;border-radius:10px;border:1px solid #3a4a78;background:#0e1630;color:var(--tx);text-transform:uppercase}
+.gate button,.play{font-size:17px;font-weight:700;border:0;border-radius:10px;padding:12px 18px;background:var(--btn);color:#fff;cursor:pointer}
+.gate button{margin-top:12px;width:100%;max-width:260px}.err{color:#ff8f8f;min-height:1.4em;margin-top:8px;font-size:14px}
+.card{background:var(--card);border-radius:14px;overflow:hidden;margin-top:16px}
+.thumb{position:relative;aspect-ratio:16/9;background:#000}.thumb img,.thumb iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
+.body{padding:12px 14px 14px}.no{color:var(--ac);font-size:13px;font-weight:700}.ttl{font-size:19px;font-weight:700;margin:2px 0}.desc{color:var(--sub);font-size:14px;margin:0 0 10px}
+.play{width:100%}
+footer{color:var(--sub);font-size:12px;text-align:center;padding:10px 16px 30px}
+</style></head><body>
+<header><h1>高校生物 イメージ動画</h1><p>しくみを、動きで見る。（1本 約3分）</p></header>
+<main id="m">
+<div class="gate" id="gate"><p>合言葉を入れてください</p>
+<input id="pw" autocomplete="off" inputmode="latin" placeholder="XXXX-XXXX"><br><button id="go">見る</button><div class="err" id="err"></div></div>
+</main>
+<footer>動画はこのページから見てください。URLやページを他の人に送らないでください。</footer>
+<script>
+const DATA={"salt": "jGcXjsdQjZw+69LLRBJxww==", "iv": "Yu3oDba7p5bosU27", "ct": "upWVtg1ofQFTh67hQ9MzCYIzMj562VBl+h+/C2TyHlSJQZvvOJdfRF2rZyj27s8u1PLk5VmQg89egx19KtiI61Fu9uObJPLNLrGUaQRD3bZCkQark9NsDrtpng0OujJLcQYHrONy0H4pgStBGUu/p1ulOGuVLbIWMQmAr7Tc1eYYkF+inpqeoaYI5yxH6BMxNx6zbRe/btsfv1zhqAxnYMVMunusCt1gjCht5sFGmQhvjurJjg865KqCqCsZ78dTdr3y2nBbwbpaCfsGw6IgHtaVN3Og+ZOiaEdqvTqkct4fhtdu5QgoWIS7QafzbwBXR5+arajocyA+wi232xs1OacRkA==", "iter": 150000};
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function open_(pw){
+  const k0=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw.replace(/[^0-9A-Za-z]/g,'').toUpperCase()),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64(DATA.salt),iterations:DATA.iter,hash:'SHA-256'},k0,{name:'AES-GCM',length:256},false,['decrypt']);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64(DATA.iv)},key,b64(DATA.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function show(list){
+  const m=document.getElementById('m');m.innerHTML='';
+  list.forEach(v=>{const c=document.createElement('div');c.className='card';
+    c.innerHTML=`<div class="thumb"><img loading="lazy" alt="" src="https://i.ytimg.com/vi/${esc(v.id)}/hqdefault.jpg"></div>
+    <div class="body"><div class="no">第${esc(v['回'])}回</div><div class="ttl">${esc(v['題名'])}</div><p class="desc">${esc(v['説明'])}</p>
+    <button class="play">▶ この解説動画を見る</button></div>`;
+    c.querySelector('.play').onclick=()=>{c.querySelector('.thumb').innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;};
+    m.appendChild(c);});
+}
+async function tryOpen(pw,save){try{const d=await open_(pw);if(save){try{localStorage.setItem('bio_pw',pw)}catch(e){}}show(d);return true}catch(e){return false}}
+document.getElementById('go').onclick=async()=>{const pw=document.getElementById('pw').value;
+  if(!await tryOpen(pw,true))document.getElementById('err').textContent='合言葉がちがいます';};
+document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('go').click()});
+(async()=>{let s=null;try{s=localStorage.getItem('bio_pw')}catch(e){}if(s)await tryOpen(s,false)})();
+</script></body></html>
